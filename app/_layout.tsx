@@ -7,7 +7,7 @@ export default function Layout(){
     return(
         <SafeAreaProvider>
             <Stack screenOptions={{headerShown : false}}>
-            
+                <Stack.Screen name='(tabs)'/>
             </Stack>
         </SafeAreaProvider>
     )
