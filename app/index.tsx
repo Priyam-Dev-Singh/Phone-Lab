@@ -28,8 +28,8 @@ export default function Home(){
             <TouchableOpacity onPress={()=>{router.push('/magnetometer')}}>
                 <Text>ElectroMagnetics</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>Kinematics</Text>
+            <TouchableOpacity onPress={()=>{router.push('/lightSensor')}}>
+                <Text>Light Sensor</Text>
             </TouchableOpacity>
             <TouchableOpacity>
                 <Text>Kinematics</Text>
