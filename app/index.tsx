@@ -22,7 +22,7 @@ export default function Home(){
             <TouchableOpacity onPress={()=>{ router.push('/accelerometer')}}>
                 <Text>Kinematics</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{router.push('/barometer')}}>
                 <Text>Atmospherics</Text>
             </TouchableOpacity>
             <TouchableOpacity>

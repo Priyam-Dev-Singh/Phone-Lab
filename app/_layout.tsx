@@ -8,9 +8,9 @@ export default function Layout(){
     return(
         <SafeAreaProvider>
             <ThemeProvider>
-                <Stack screenOptions={{headerShown : false}}>
-                <Stack.Screen name='index'/>
-            </Stack>
+                <Stack screenOptions={{headerShown:false}}>
+                    <Stack.Screen name='index'/>
+                </Stack>
             </ThemeProvider>
         </SafeAreaProvider>
     )
