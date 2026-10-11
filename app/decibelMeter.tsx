@@ -17,7 +17,6 @@ export default function DbMeter() {
     const isDark = colorScheme === 'dark';
     const styles = createStyles(isDark);
 
-    // FIX: Explicitly enable metering inside the options object
     const audioRecorder = useAudioRecorder({
         ...RecordingPresets.HIGH_QUALITY,
         isMeteringEnabled: true,

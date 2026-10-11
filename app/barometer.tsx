@@ -21,6 +21,7 @@ export default function Baromtr() {
             alert("No Barometer sensor found on this device!");
             //router.back();
             return false;
+            
         }
         return true;
     };
