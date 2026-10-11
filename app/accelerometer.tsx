@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {Accelerometer} from 'expo-sensors'
-import Svg, { Line, Polyline } from 'react-native-svg'
+import Svg, { Line, Polyline } from 'react-native-svg';
 
 
 export default function AcclrtComp(){
@@ -60,10 +60,13 @@ export default function AcclrtComp(){
     //console.log(pointString);
     return(
         <SafeAreaView>
-            <ScrollView>
-                <View>
+
+            <View>
                 <Text>Accelerometer</Text>
             </View>
+
+            <ScrollView contentContainerStyle={{paddingBottom: 20}} showsVerticalScrollIndicator={false}>
+            
             <View style={{flexDirection:'row', flexWrap: 'wrap', gap: 10}}>
                 <Text>y:{data.y.toFixed(5)} or {(data.y * 9.81).toFixed(5)} m/s²</Text>
                 <Text>z:{data.z.toFixed(5)} or {(data.z * 9.81).toFixed(5)} m/s²</Text>
@@ -120,11 +123,20 @@ export default function AcclrtComp(){
                           backgroundColor: '#151515',
                           marginTop: 20,}}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5}}>
-                    <Text style={{ color: '#00ffcc', fontFamily: 'monospace', fontSize: 11 }}>ROLLING INTENSITY (T-5s)</Text>
-                    <Text style={{ color: '#ff3366', fontFamily: 'monospace', fontSize: 11 }}>PEAK: {(peakValue * 9.81).toFixed(2)} m/s²</Text>
+                    <Text style={{ color: '#00ffcc', fontFamily: 'monospace', fontSize: 11 }}>(T-5s)</Text>
+                    <View style={{flexDirection:'row', gap: 10}}>
+                        <View>
+                            <Text style={{ color: '#ff3366', fontFamily: 'monospace', fontSize: 11 }}>PEAK: {(peakValue * 9.81).toFixed(2)} m/s²</Text>
+                        </View>                        
+                        <TouchableOpacity onPress={()=> setPeakValue(0)} style={{gap: 10}}>
+                            <Text style={{color: '#ff3366', fontFamily: 'monospace', fontSize: 11, fontWeight: 'bold'}}>Restart</Text>
+\                       </TouchableOpacity>
+                        
+                    </View>
+
                 </View>
 
-                <View style={{height: 110, justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{height: 200, justifyContent: 'center', alignItems: 'center'}}>
                     <Svg height='100' width="300">
                         <Line x1="0" y1="70" x2="300" y2="70" stroke="#222" strokeWidth="1" strokeDasharray="3,3" />
                         <Line x1="0" y1="10" x2="300" y2="10" stroke="#311" strokeWidth="1" />
