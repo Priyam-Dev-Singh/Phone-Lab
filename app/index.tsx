@@ -31,8 +31,8 @@ export default function Home(){
             <TouchableOpacity onPress={()=>{router.push('/lightSensor')}}>
                 <Text>Light Sensor</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-                <Text>Kinematics</Text>
+            <TouchableOpacity onPress={()=>{router.push('decibelMeter')}}>
+                <Text>Decibel Meter</Text>
             </TouchableOpacity>
           </View>
        </SafeAreaView>

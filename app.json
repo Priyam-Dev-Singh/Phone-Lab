@@ -30,7 +30,12 @@
           "motionPermission": "Allow Phone Lab to access your device motion"
         }
       ],
-      "expo-audio"
+      ["expo-audio",
+    {
+      "microphonePermission": "Allow Phone Lab to access your microphone",
+      "enableBackgroundPlayback": true,
+      "enableBackgroundRecording": false
+    }]
     ]
   }
 }
