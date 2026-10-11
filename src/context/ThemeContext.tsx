@@ -2,7 +2,7 @@ import { Children, createContext, ReactNode, useContext, useEffect, useState } f
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const themeKey = "@themeData";
-export const ThemeContext = createContext<any>(null);
+export const ThemeContext = createContext<any>({});
 export const ThemeProvider = ({children}: {children: ReactNode} ) =>{
 
     const [colorScheme, setColorScheme] = useState('dark');
