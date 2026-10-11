@@ -18,8 +18,8 @@ export default function Home(){
         <View style={{margin: 10, padding: 10}}>
             <Text>PHONE LAB</Text>
         </View>
-          <View style={{flexDirection:'row', flexWrap:'wrap',gap:20, marginTop:'20'}}>
-            <TouchableOpacity>
+          <View style={{flexDirection:'row', flexWrap:'wrap',gap:20, marginTop:20}}>
+            <TouchableOpacity onPress={()=>{ router.push('/accelerometer')}}>
                 <Text>Kinematics</Text>
             </TouchableOpacity>
             <TouchableOpacity>

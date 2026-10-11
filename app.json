@@ -23,7 +23,10 @@
     "plugins": [
       "expo-router",
       "expo-status-bar",
-      "expo-sharing"
+      "expo-sharing",
+      ["expo-sensors", {
+         "motionPermission": "Allow Phone Lab to access your device motion"
+      }]
     ]
   }
 }
