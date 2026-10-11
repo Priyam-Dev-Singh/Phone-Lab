@@ -25,7 +25,7 @@ export default function Home(){
             <TouchableOpacity onPress={()=>{router.push('/barometer')}}>
                 <Text>Atmospherics</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{router.push('/magnetometer')}}>
                 <Text>ElectroMagnetics</Text>
             </TouchableOpacity>
             <TouchableOpacity>
