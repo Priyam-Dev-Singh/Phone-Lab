@@ -15,7 +15,14 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ],
+      "package": "com.priyam_singh.PhoneLabApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,12 +37,20 @@
           "motionPermission": "Allow Phone Lab to access your device motion"
         }
       ],
-      ["expo-audio",
-    {
-      "microphonePermission": "Allow Phone Lab to access your microphone",
-      "enableBackgroundPlayback": true,
-      "enableBackgroundRecording": false
-    }]
-    ]
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow Phone Lab to access your microphone",
+          "enableBackgroundPlayback": true,
+          "enableBackgroundRecording": false
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "48835a58-53e6-4503-b68c-4b4b06a59e43"
+      }
+    }
   }
 }
