@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
 import { useContext } from "react";
@@ -25,7 +25,7 @@ export default function Home() {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>PHONE PHYSICS LAB</Text>
+                    <Text style={styles.headerTitle}>MY {Platform.OS === 'android' ? 'ANDROID':'IOS'} LAB</Text>
                     <Text style={styles.headerSubtitle}>Sensors Available</Text>
                 </View>
 
