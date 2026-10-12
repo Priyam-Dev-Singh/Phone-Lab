@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Accelerometer } from 'expo-sensors';
-import Svg, { Line, Polyline, Text as SvgText } from 'react-native-svg';
+import Svg, { Circle, Line, Polygon, Polyline, Text as SvgText, G } from 'react-native-svg';
 import { ThemeContext } from "../src/context/ThemeContext";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -19,11 +19,16 @@ export default function AcclrtComp() {
     const [speed, setSpeed] = useState<string>('normal');
 
     const netG = Math.sqrt(data.x ** 2 + data.y ** 2 + data.z ** 2);
-    const dotX = data.x * 100;
-    const dotY = -data.y * 100;
+    const SIunit = netG * 9.81;
+    const xSI = data.x * 9.81;
+    const ySI = data.y * 9.81;
+    const zSI = data.z * 9.81;
+    
+    const dotX = data.x * 60;
+    const dotY = -data.y * 60;
     const dotScale = Math.max(0.5, Math.abs(data.z)); 
 
-    const activeColor = '#ff3366';
+    const activeColor = '#dced87';
 
     const handleSensorData = (sensorData: { x: number, y: number, z: number }) => {
         setData(sensorData);
@@ -53,21 +58,21 @@ export default function AcclrtComp() {
     }, []);
 
     const pointString = history.map((g, index) => {
-        const x = index * 6;
+        const x = index * 3;
         const clampedG = Math.min(Math.max(g, 0), 3);
-        const y = 100 - (clampedG / 3) * 90;
+        const y = 80 - (clampedG / 3) * 70;
         return `${x},${y}`;
     }).join(' ');
+
+    const clampedG = Math.max(-4, Math.min(netG, 10));
+    const needleAngle = 180 + (clampedG * 22.5);
+
+    const ticks = Array.from({ length: 15 }, (_, i) => -4 + i);
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
                 
-                <View style={styles.header}>
-                    <Text style={styles.title}>KINEMATICS (ACCELEROMETER)</Text>
-                    <View style={[styles.statusDot, { backgroundColor: subscription ? activeColor : (isDark ? '#555' : '#ccc') }]} />
-                </View>
-
                 <View style={styles.speedControls}>
                     {speed === 'normal' && (
                         <TouchableOpacity onPress={() => { _fast(); setSpeed('fast'); }}>
@@ -86,75 +91,117 @@ export default function AcclrtComp() {
                     )}
                 </View>
 
-                <View style={styles.radarContainer}>
-                    <View style={styles.crosshairH} />
-                    <View style={styles.crosshairV} />
-                    
-                    <View style={[
-                        styles.dot,
-                        {
-                            transform: [
-                                { translateX: dotX },
-                                { translateY: dotY },
-                                { scale: dotScale }
-                            ]
-                        }
-                    ]} />
+                <View style={styles.analogCasing}>
+                    <View style={[styles.screw, { top: 10, left: 10 }]}><View style={styles.screwCross1} /><View style={styles.screwCross2} /></View>
+                    <View style={[styles.screw, { top: 10, right: 10 }]}><View style={styles.screwCross1} /><View style={styles.screwCross2} /></View>
+                    <View style={[styles.screw, { bottom: 10, left: 10 }]}><View style={styles.screwCross1} /><View style={styles.screwCross2} /></View>
+                    <View style={[styles.screw, { bottom: 10, right: 10 }]}><View style={styles.screwCross1} /><View style={styles.screwCross2} /></View>
+
+                    <Svg height="300" width="300">
+                        <Circle cx="150" cy="150" r="135" fill="#1b1c1b" stroke="#000" strokeWidth="4" />
+                        
+                        {ticks.map(val => {
+                            const angle = 180 + (val * 22.5);
+                            const isEven = val % 2 === 0;
+                            const textRadius = 90;
+                            const rad = (angle * Math.PI) / 180;
+                            const textX = 150 + textRadius * Math.cos(rad);
+                            const textY = 150 + textRadius * Math.sin(rad) + 8; 
+
+                            return (
+                                <G key={val}>
+                                    <G transform={`rotate(${angle}, 150, 150)`}>
+                                        <Line x1="265" y1="150" x2={isEven ? "280" : "275"} y2="150" stroke={activeColor} strokeWidth={isEven ? "4" : "2"} />
+                                    </G>
+                                    {isEven && (
+                                        <SvgText x={textX} y={textY} fill={activeColor} fontSize="24" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
+                                            {val}
+                                        </SvgText>
+                                    )}
+                                </G>
+                            );
+                        })}
+
+                        <SvgText x="150" y="115" fill="#ffffff" fontSize="12" fontFamily="monospace" fontWeight="bold" textAnchor="middle">ACCELERATION</SvgText>
+                        <SvgText x="150" y="130" fill="#ffffff" fontSize="12" fontFamily="monospace" fontWeight="bold" textAnchor="middle">g UNITS</SvgText>
+
+                        <Polygon 
+                            points="130,146 130,154 260,154 275,150 260,146" 
+                            fill={activeColor} 
+                            transform={`rotate(${needleAngle}, 150, 150)`} 
+                        />
+                        <Circle cx="150" cy="150" r="12" fill="#3a3d3c" stroke="#111" strokeWidth="2" />
+                    </Svg>
+                </View>
+
+                <View style={styles.sideBySideContainer}>
+                    <View style={styles.radarContainer}>
+                        <View style={styles.crosshairH} />
+                        <View style={styles.crosshairV} />
+                        <View style={[
+                            styles.dot,
+                            {
+                                transform: [
+                                    { translateX: dotX },
+                                    { translateY: dotY },
+                                    { scale: dotScale }
+                                ]
+                            }
+                        ]} />
+                    </View>
+
+                    <View style={styles.graphContainer}>
+                        <View style={styles.graphHeader}>
+                            <Text style={styles.graphLabel}>T-5s</Text>
+                            <View style={{flexDirection:'row', gap: 5}}>
+                            <View>
+                                <Text style={styles.graphLabel}>{peakValue.toFixed(3)}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => setPeakValue(0)}>
+                                <AntDesign name="redo" size={14} color={activeColor} />
+                            </TouchableOpacity>
+                            </View>
+                        </View>
+                        
+                        <Svg height="80" width="150">
+                            <Line x1="0" y1="10" x2="150" y2="10" stroke={isDark ? "#333" : "#ddd"} strokeWidth="1" />
+                            <SvgText x="2" y="20" fill={isDark ? "#666" : "#999"} fontSize="8" fontFamily="monospace" fontWeight="bold">3G</SvgText>
+                            <Line x1="0" y1="56" x2="150" y2="56" stroke={isDark ? "#333" : "#ddd"} strokeWidth="1" strokeDasharray="3,3" />
+                            <SvgText x="2" y="53" fill={isDark ? "#666" : "#999"} fontSize="8" fontFamily="monospace" fontWeight="bold">1G</SvgText>
+                            
+                            <Polyline points={pointString} fill="none" stroke={activeColor} strokeWidth="2" />
+                        </Svg>
+                    </View>
                 </View>
 
                 <View style={styles.dashboard}>
-                    <Text style={styles.label}>NET ACCELERATION</Text>
+                    <Text style={styles.label}>NET KINEMATIC FORCE</Text>
                     <Text style={[styles.mainValue, { color: activeColor }]}>
-                        {(netG * 9.81).toFixed(2)} <Text style={styles.unit}>m/s²</Text>
+                        {netG.toFixed(2)} <Text style={styles.unit}>g</Text>
                     </Text>
+                    <View>
+                        <Text style={styles.axisValue}>{SIunit.toFixed(3)} m/s²</Text>
+                    </View>
 
                     <View style={styles.axisGrid}>
                         <View style={styles.axisItem}>
-                            <Text style={styles.axisLabel}>X-AXIS</Text>
-                            <Text style={styles.axisValue}>{(data.x * 9.81).toFixed(2)}</Text>
+                            <Text style={styles.axisLabel}>X</Text>
+                            <Text style={styles.axisValue}>{data.x.toFixed(2)}</Text>
+                            <Text style={styles.axisLabel}>{xSI.toFixed(3)} m/s²</Text>
+                        </View>
+                        
+                        <View style={styles.axisItem}>
+                            <Text style={styles.axisLabel}>Y</Text>
+                            <Text style={styles.axisValue}>{data.y.toFixed(2)}</Text>
+                            <Text style={styles.axisLabel}>{ySI.toFixed(3)} m/s²</Text>
+
                         </View>
                         <View style={styles.axisItem}>
-                            <Text style={styles.axisLabel}>Y-AXIS</Text>
-                            <Text style={styles.axisValue}>{(data.y * 9.81).toFixed(2)}</Text>
-                        </View>
-                        <View style={styles.axisItem}>
-                            <Text style={styles.axisLabel}>Z-AXIS</Text>
-                            <Text style={styles.axisValue}>{(data.z * 9.81).toFixed(2)}</Text>
+                            <Text style={styles.axisLabel}>Z</Text>
+                            <Text style={styles.axisValue}>{data.z.toFixed(2)}</Text>
+                            <Text style={styles.axisLabel}>{zSI.toFixed(3)} m/s²</Text>
                         </View>
                     </View>
-                </View>
-
-                <View style={styles.graphContainer}>
-                    <View style={styles.graphHeader}>
-                        <Text style={styles.graphLabel}>ROLLING INTENSITY (T-5s)</Text>
-                        <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                            <Text style={[styles.graphLabel, { color: activeColor }]}>
-                                PEAK: {(peakValue * 9.81).toFixed(1)} m/s²
-                            </Text>
-                            <TouchableOpacity onPress={() => setPeakValue(0)}>
-                                <AntDesign name="redo" size={16} color={activeColor} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <Svg height="100" width="300">
-                        <Line x1="0" y1="10" x2="300" y2="10" stroke={isDark ? "#333" : "#ddd"} strokeWidth="1" />
-                        <SvgText x="5" y="22" fill={isDark ? "#666" : "#999"} fontSize="9" fontFamily="monospace" fontWeight="bold">
-                            ~3G (MAX)
-                        </SvgText>
-
-                        <Line x1="0" y1="70" x2="300" y2="70" stroke={isDark ? "#333" : "#ddd"} strokeWidth="1" strokeDasharray="3,3" />
-                        <SvgText x="5" y="66" fill={isDark ? "#666" : "#999"} fontSize="9" fontFamily="monospace" fontWeight="bold">
-                            1G (RESTING)
-                        </SvgText>
-
-                        <Polyline
-                            points={pointString}
-                            fill="none"
-                            stroke={activeColor}
-                            strokeWidth="2"
-                        />
-                    </Svg>
                 </View>
 
                 <TouchableOpacity 
@@ -162,7 +209,7 @@ export default function AcclrtComp() {
                     style={[styles.powerButton, { borderColor: subscription ? activeColor : (isDark ? '#333' : '#ccc') }]}
                 >
                     <Text style={[styles.powerText, { color: subscription ? activeColor : (isDark ? '#888' : '#666') }]}>
-                        {subscription ? 'DISENGAGE SENSOR' : 'ENGAGE SENSOR'}
+                        {subscription ? 'DISENGAGE POWER' : 'ENGAGE POWER'}
                     </Text>
                 </TouchableOpacity>
 
@@ -175,7 +222,7 @@ function createStyles(isDark: boolean) {
     return StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: isDark ? '#121212' : '#f5f5f5',
+            backgroundColor: isDark ? '#121212' : '#d9d9d9',
         },
         scrollContent: {
             flexGrow: 1,
@@ -183,78 +230,130 @@ function createStyles(isDark: boolean) {
             padding: 20,
             paddingBottom: 40,
         },
-        header: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '100%',
-            justifyContent: 'space-between',
-            marginTop: 10,
-        },
-        title: {
-            color: isDark ? '#888' : '#666',
-            fontFamily: 'monospace',
-            fontSize: 14,
-            fontWeight: 'bold',
-            letterSpacing: 2,
-        },
-        statusDot: {
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-        },
         speedControls: {
             flexDirection: 'row',
             width: '100%',
             justifyContent: 'flex-end',
-            paddingRight: 10,
-            marginTop: 10,
-            marginBottom: -20,
-            zIndex: 10,
+            marginBottom: 10,
         },
-        radarContainer: {
-            width: 250,
-            height: 250,
-            borderRadius: 125,
-            borderWidth: 2,
-            borderColor: isDark ? '#333' : '#ccc',
+        analogCasing: {
+            width: 320,
+            height: 320,
+            backgroundColor: '#3a3d3c',
+            borderRadius: 8,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
+            borderWidth: 3,
+            borderColor: '#222322',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.5,
+            shadowRadius: 10,
+            elevation: 10,
+            position: 'relative',
+        },
+        screw: {
+            position: 'absolute',
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            backgroundColor: '#2a2c2b',
+            borderWidth: 1,
+            borderColor: '#111',
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowColor: '#000',
+            shadowOffset: { width: 1, height: 1 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+        },
+        screwCross1: {
+            position: 'absolute',
+            width: 14,
+            height: 2,
+            backgroundColor: '#1a1a1a',
+            transform: [{ rotate: '45deg' }],
+        },
+        screwCross2: {
+            position: 'absolute',
+            width: 14,
+            height: 2,
+            backgroundColor: '#1a1a1a',
+            transform: [{ rotate: '-45deg' }],
+        },
+        sideBySideContainer: {
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            marginTop: 20,
+            height: 160,
+        },
+        radarContainer: {
+            width: '48%',
+            height: '100%',
+            borderRadius: 8,
+            borderWidth: 2,
+            borderColor: isDark ? '#333' : '#bbb',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: isDark ? '#1a1a1a' : '#eaeaea',
             overflow: 'hidden',
-            marginVertical: 40,
         },
         crosshairH: {
             position: 'absolute',
             width: '100%',
             height: 1,
-            backgroundColor: isDark ? '#333' : '#eee',
+            backgroundColor: isDark ? '#333' : '#ccc',
         },
         crosshairV: {
             position: 'absolute',
             width: 1,
             height: '100%',
-            backgroundColor: isDark ? '#333' : '#eee',
+            backgroundColor: isDark ? '#333' : '#ccc',
         },
         dot: {
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: '#ff3366',
+            width: 20,
+            height: 20,
+            borderRadius: 10,
+            backgroundColor: '#dced87',
             position: 'absolute',
-            shadowColor: '#ff3366',
+            shadowColor: '#dced87',
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity: 0.8,
             shadowRadius: 10,
             elevation: 5,
         },
+        graphContainer: {
+            width: '48%',
+            height: '100%',
+            backgroundColor: isDark ? '#1a1a1a' : '#eaeaea',
+            padding: 10,
+            borderRadius: 8,
+            borderWidth: 2,
+            borderColor: isDark ? '#333' : '#bbb',
+            alignItems: 'center',
+        },
+        graphHeader: {
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between',
+            marginBottom: 5,
+        },
+        graphLabel: {
+            color: isDark ? '#666' : '#888',
+            fontSize: 10,
+            fontFamily: 'monospace',
+            fontWeight: 'bold',
+        },
         dashboard: {
             width: '100%',
             backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
             padding: 20,
-            borderRadius: 12,
+            borderRadius: 8,
             borderWidth: 1,
             borderColor: isDark ? '#333' : '#ddd',
             alignItems: 'center',
+            marginTop: 20,
         },
         label: {
             color: isDark ? '#888' : '#666',
@@ -276,8 +375,8 @@ function createStyles(isDark: boolean) {
             flexDirection: 'row',
             width: '100%',
             justifyContent: 'space-between',
-            marginTop: 20,
-            paddingTop: 20,
+            marginTop: 15,
+            paddingTop: 15,
             borderTopWidth: 1,
             borderTopColor: isDark ? '#333' : '#eee',
         },
@@ -295,32 +394,11 @@ function createStyles(isDark: boolean) {
             fontFamily: 'monospace',
             fontSize: 16,
         },
-        graphContainer: {
-            width: '100%',
-            backgroundColor: isDark ? '#1a1a1a' : '#ffffff',
-            padding: 15,
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: isDark ? '#333' : '#ddd',
-            alignItems: 'center',
-            marginTop: 20,
-        },
-        graphHeader: {
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between',
-            marginBottom: 10,
-        },
-        graphLabel: {
-            color: isDark ? '#666' : '#999',
-            fontSize: 10,
-            fontFamily: 'monospace',
-            fontWeight: 'bold',
-        },
         powerButton: {
-            marginTop: 40,
+            marginTop: 20,
             paddingVertical: 15,
-            paddingHorizontal: 40,
+            width: '100%',
+            alignItems: 'center',
             borderWidth: 1,
             borderRadius: 8,
             backgroundColor: isDark ? '#151515' : '#ffffff',
