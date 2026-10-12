@@ -443,10 +443,12 @@ function createStyles(isDark: boolean) {
             borderWidth: 1,
             borderColor: isDark ? '#333' : '#ddd',
             padding: 10,
+            alignItems:'center'
         },
         graphHeader: {
             flexDirection: 'row',
             justifyContent: 'space-between',
+            gap: 30,
             alignItems: 'center',
             marginBottom: 5,
         },
