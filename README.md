@@ -33,11 +33,12 @@ It feels less like a mobile app and more like a piece of tactical diagnostic equ
 
 Since Apple restricts background sensor telemetry on bare iOS devices, the fastest way to run this lab is through the **Expo Go** tunnel.
 
-**1. Clone the hardware schematic:**
+**1. Clone the Repo and move to the app:**
 
 ```bash
-git clone https://github.com/yourusername/telemetry-physics-lab.git
-cd telemetry-physics-lab
+git clone https://github.com/yourusername/Phone-Lab.git
+cd Phone-Lab
+cd PhoneLabApp
 
 ```
 
@@ -64,6 +65,7 @@ npx expo start
 
 ---
 
+### 🔬 SEE CONTENT FOLDER FOR REFERNCE IMAGES AND WORKING DEMO
 
 ### ⚙️ TECH SPECS
 
