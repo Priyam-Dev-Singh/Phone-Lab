@@ -6,6 +6,7 @@ import { ThemeContext } from "../src/context/ThemeContext";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Svg, { Line, Polyline, Text as SvgText, Path, G } from "react-native-svg";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import SaveExperiment from "../src/components/saveEpxeriment";
 
 export default function Magnetomtr() {
     const { colorScheme } = useContext<any>(ThemeContext);
@@ -199,6 +200,8 @@ export default function Magnetomtr() {
                         </View>
                     </View>
                 </View>
+
+                <SaveExperiment liveValue={netFlux} unit="µT"/>
 
             </ScrollView>
         </SafeAreaView>
