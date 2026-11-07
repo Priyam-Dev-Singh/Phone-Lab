@@ -11,6 +11,7 @@ const LAB_MODULES = [
     { id: 'electromagnetics', title: 'ELECTRO  MAGNETICS', subtitle: 'Flux Scanner', route: '/magnetometer', icon: 'magnet', color: '#ff9900' },
     { id: 'optics', title: 'OPTICS', subtitle: 'Photometer', route: '/lightSensor', icon: 'lightbulb-on-outline', color: '#ffd700' },
     { id: 'acoustics', title: 'ACOUSTICS', subtitle: 'Decibel Meter', route: '/decibelMeter', icon: 'waveform', color: '#9933ff' },
+    { id: 'archive', title: 'ARCHIVE', subtitle: 'Saved Values', route: '/archiveDetail', icon: 'file-document-multiple-outline', color: '#66CCFF' },
 ];
 
 export default function Home() {
