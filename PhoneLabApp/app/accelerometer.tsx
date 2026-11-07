@@ -6,6 +6,7 @@ import Svg, { Circle, Line, Polygon, Polyline, Text as SvgText, G } from 'react-
 import { ThemeContext } from "../src/context/ThemeContext";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import SaveExperiment from "../src/components/saveEpxeriment";
 
 export default function AcclrtComp() {
     const { colorScheme } = useContext<any>(ThemeContext);
@@ -212,6 +213,10 @@ export default function AcclrtComp() {
                         {subscription ? 'DISENGAGE POWER' : 'ENGAGE POWER'}
                     </Text>
                 </TouchableOpacity>
+
+               
+                    <SaveExperiment liveValue={SIunit} unit={"m/s²"}/>
+                
 
             </ScrollView>
         </SafeAreaView>

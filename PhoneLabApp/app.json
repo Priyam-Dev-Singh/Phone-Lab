@@ -48,7 +48,9 @@
           "enableBackgroundPlayback": true,
           "enableBackgroundRecording": false
         }
-      ]
+      ],
+      "expo-font",
+      "expo-asset"
     ],
     "extra": {
       "router": {},
