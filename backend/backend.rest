@@ -1,2 +1,2 @@
 ###Test command on http://localhost:5000
-GET http://localhost:5000
+GET http://localhost:5000/api/test

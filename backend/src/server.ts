@@ -16,7 +16,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.get('/', async(req, res)=>{
+app.get('/api/test', async(req, res)=>{
    try{
     await prisma.$queryRaw`SELECT 1`;
     res.json("DB working properly")
