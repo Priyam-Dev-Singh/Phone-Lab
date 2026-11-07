@@ -12,6 +12,7 @@ import {
   setAudioModeAsync,
   useAudioRecorderState,
 } from 'expo-audio';
+import SaveExperiment from '../src/components/saveEpxeriment';
 
 export default function DbMeter() {
     const { colorScheme } = useContext<any>(ThemeContext);
@@ -191,6 +192,8 @@ export default function DbMeter() {
 
                     </View>
                 </View>
+
+                <SaveExperiment liveValue={currentDB} unit={"db"}/>
 
             </ScrollView>
         </SafeAreaView>
