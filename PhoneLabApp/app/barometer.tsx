@@ -6,6 +6,7 @@ import { Barometer } from "expo-sensors";
 import { useRouter } from "expo-router";
 import Svg, { Circle, Line, Polygon, Rect, Text as SvgText, G } from 'react-native-svg';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import SaveExperiment from "../src/components/saveEpxeriment";
 
 export default function Baromtr() {
     const router = useRouter();
@@ -165,6 +166,8 @@ export default function Baromtr() {
                         </TouchableOpacity>
                         </View>
                     </View>
+
+                    <SaveExperiment liveValue={data.pressure} unit={'hPa'}/>
 
                 </ScrollView>
             </SafeAreaView>
