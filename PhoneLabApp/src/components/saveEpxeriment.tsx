@@ -75,7 +75,7 @@ export default function SaveExperiment({ liveValue, unit }: { liveValue: number,
                         </TouchableOpacity>
                     </View>
                     {expData.slice(-5).map((snapshot, index) => {
-                        const time = new Date(snapshot.timeStamp).toLocaleTimeString([], { hour12: false });
+                        const time = new Date(snapshot.timeStamp).getFullYear() +'/'+ (new Date(snapshot.timeStamp).getMonth()+1) +'/'+ new Date(snapshot.timeStamp).getDate();
                         return (
                             <View key={index} style={styles.ledgerRow}>
                                 <Text style={[styles.ledgerTime, {fontSize: 10}]}>[{time}]</Text>
@@ -102,7 +102,7 @@ export default function SaveExperiment({ liveValue, unit }: { liveValue: number,
                         </TouchableOpacity>
                     </View>
                     {data.slice(-5).map((snapshot, index) => {
-                        const time = new Date(snapshot.timeStamp).toLocaleTimeString([], { hour12: false });
+                        const time = new Date(snapshot.timeStamp).getFullYear() +'/'+ (new Date(snapshot.timeStamp).getMonth()+1) +'/'+ new Date(snapshot.timeStamp).getDate();
                         return (
                             <View key={index} style={styles.ledgerRow}>
                                 <Text style={styles.ledgerTime}>[{time}]</Text>
