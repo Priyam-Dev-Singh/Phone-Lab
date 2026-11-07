@@ -12,3 +12,22 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String        @id @default(uuid())
+  email     String        @unique
+  name      String?
+  createdAt DateTime      @default(now())
+  experiments Experiment[]
+}
+
+model Experiment {
+  id          String       @id @default(uuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  sensorType  String      
+  peakValue   Float
+  troughValue Float?
+  durationSec Float?
+  createdAt   DateTime     @default(now())
+}

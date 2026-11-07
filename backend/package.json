@@ -4,7 +4,7 @@
   "description": "Backend for the phone lab app that saves the experiment values saved by the users in a postgres database",
   "main": "index.js",
   "scripts": {
-    "dev":"tsx watch src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
