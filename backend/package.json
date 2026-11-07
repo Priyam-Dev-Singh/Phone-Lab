@@ -1,9 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for the phone lab app that saves the experiment values saved by the users in a postgres database",
   "main": "index.js",
   "scripts": {
+    "dev":"tsx watch src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,7 +18,8 @@
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
     "google-auth-library": "^11.3.3",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "tsx": "^4.23.15"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
