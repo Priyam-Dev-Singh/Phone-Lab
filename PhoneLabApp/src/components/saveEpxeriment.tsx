@@ -3,11 +3,17 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import UseTelementary from "../hooks/useTelementaryData";
 
 export default function SaveExperiment({liveValue}:any){
-
+    type Snapshot = {
+        type: string
+        value : number,
+        timeStamp : any
+    }
     const telementary = UseTelementary(liveValue);
+    const [data, setData] = useState<Snapshot[]>([]);
 
     const handleSnapshot = ()=>{
-        telementary.captureSnapshot();
+        const snapshot:Snapshot = telementary.captureSnapshot();
+        setData(prev => [...prev, snapshot])
         console.log("Snapshot captured");
     }
 
@@ -53,6 +59,19 @@ export default function SaveExperiment({liveValue}:any){
                     <Text style={styles.readoutText}>MIN: {telementary.trough.toFixed(2)}</Text>
                 </View>
             )}
+            <View>
+                { data.length <= 10 && data.map((value, index)=>(
+                    <View key={index}>
+                        <Text>{value.value}</Text>
+                        <Text>{value.timeStamp}</Text>
+                    </View>
+                ))}
+            </View>
+            <View>
+                <TouchableOpacity>
+                    <Text>Save Experiment</Text>
+                </TouchableOpacity>
+            </View>
 
         </View>
     );
