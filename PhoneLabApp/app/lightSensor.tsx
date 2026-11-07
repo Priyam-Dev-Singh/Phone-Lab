@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeContext } from '../src/context/ThemeContext';
 import Svg, { Line, Polyline, Text as SvgText, Path, G, Polygon } from 'react-native-svg';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import SaveExperiment from '../src/components/saveEpxeriment';
 
 // ---------- CONFIG ----------
 const BRAND = 'LUX LAB'; // <- put your own name here
@@ -216,7 +217,7 @@ export default function LightSnsr() {
 
                 <View style={styles.graphContainer}>
                     <View style={styles.graphHeader}>
-                        <Text style={styles.graphLabel}>ILLUMINANCE HISTORY (LOG)</Text>
+                        <Text style={styles.graphLabel}>ILLUMINANCE HISTORY</Text>
                         <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                             <Text style={styles.graphLabel}>Peak: {highest.toFixed(1)} lx</Text>
                             <TouchableOpacity onPress={() => setHighest(0)}>
@@ -266,6 +267,7 @@ export default function LightSnsr() {
                     </Text>
                 </TouchableOpacity>
 
+                <SaveExperiment liveValue={illuminance} unit={"lx"}/>
             </ScrollView>
         </SafeAreaView>
     );
